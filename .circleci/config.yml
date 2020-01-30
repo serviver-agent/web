@@ -1,6 +1,9 @@
 version: 2
 jobs:
   build:
+    branches:
+      only:
+        - release
     working_directory: ~/repo
     docker:
       - image: innovatorjapan/awscli:latest
