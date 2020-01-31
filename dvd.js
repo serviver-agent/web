@@ -4,13 +4,33 @@ window.onload = function() {
     y: 100,
     vx: 3,
     vy: 3,
+    fieldx: null,
+    fieldy: null,
+  }
+  let size = {
+    x: null,
+    y: null
+  }
+
+  var dvdField = document.getElementById("dvd-field");
+  ctx.fieldx = dvdField.clientHeight;
+  ctx.fieldy = dvdField.clientWidth;
+  window.onresize = function() {
+    ctx.fieldx = dvdField.clientHeight;
+    ctx.fieldy = dvdField.clientWidth;
   }
 
   var dvd = document.getElementById("dvd");
+  size.x = dvd.clientHeight;
+  size.y = dvd.clientWidth;
+
   dvd.style.top = 20;
   dvd.style.left = 400;
   updateColor();
   update();
+
+  console.log(ctx);
+  console.log(size);
 
   function update() {
     setTimeout(() => {
@@ -24,12 +44,12 @@ window.onload = function() {
   }
 
   function checkHit() {
-    if(ctx.x + 240 >= window.innerWidth || ctx.x <= 0){
+    if(ctx.x + size.x >= ctx.fieldx || ctx.x <= 0){
       ctx.vx *= -1;
       updateColor();
     }
   
-    if(ctx.y + 320 >= window.innerHeight || ctx.y <= 0){
+    if(ctx.y + size.y >= ctx.fieldy || ctx.y <= 0){
       ctx.vy *= -1;
       updateColor();
     }
@@ -44,72 +64,3 @@ window.onload = function() {
   }
 
 }
-
-
-// /* Referenced https://github.com/AlessioMaddaluno/bouncing-dvd-logo */
-// let speed = 20;
-// let scale = 0.17; // Image scale (I work on 1080p monitor)
-// let canvas;
-// let ctx;
-// let logoColor;
-
-// let dvd = {
-//     x: 200,
-//     y: 300,
-//     xspeed: 10,
-//     yspeed: 10,
-//     img: new Image()
-// };
-
-// (function main(){
-//     canvas = document.body;
-//     ctx = canvas.getContext("2d");
-//     dvd.img.src = 'DVD_logo.svg';
-
-//     //Draw the "tv screen"
-//     canvas.width  = window.innerWidth;
-//     canvas.height = window.innerHeight;
-
-//     pickColor();
-//     update();
-// })();
-
-// function update() {
-//     setTimeout(() => {
-//         //Draw the canvas background
-//         ctx.fillStyle = '#000';
-//         ctx.fillRect(0, 0, canvas.width, canvas.height);
-//         //Draw DVD Logo and his background
-//         ctx.fillStyle = logoColor;
-//         ctx.fillRect(dvd.x, dvd.y, dvd.img.width*scale, dvd.img.height*scale);
-//         ctx.drawImage(dvd.img, dvd.x, dvd.y, dvd.img.width*scale, dvd.img.height*scale);
-//         //Move the logo
-//         dvd.x+=dvd.xspeed;
-//         dvd.y+=dvd.yspeed;
-//         //Check for collision 
-//         checkHitBox();
-//         update();   
-//     }, speed)
-// }
-
-// //Check for border collision
-// function checkHitBox(){
-//     if(dvd.x+dvd.img.width*scale >= canvas.width || dvd.x <= 0){
-//         dvd.xspeed *= -1;
-//         pickColor();
-//     }
-        
-//     if(dvd.y+dvd.img.height*scale >= canvas.height || dvd.y <= 0){
-//         dvd.yspeed *= -1;
-//         pickColor();
-//     }    
-// }
-
-// //Pick a random color in RGB format
-// function pickColor(){
-//     r = Math.random() * (254 - 0) + 0;
-//     g = Math.random() * (254 - 0) + 0;
-//     b = Math.random() * (254 - 0) + 0;
-
-//     logoColor = 'rgb('+r+','+g+', '+b+')';
-// }
