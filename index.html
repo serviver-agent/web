@@ -3,6 +3,13 @@
     <title>Serviver Agent</title>
     <meta charset="utf-8">
     <style>
+html {
+  font-family: 'Roboto', 'Noto Sans JP';
+  visibility: hidden;
+}
+html.wf-active {
+  visibility: visible;
+}
 body {
   background-color: #2d88c1;
 }
@@ -53,6 +60,22 @@ svg#dvd {
 }
 
 </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script>
+      WebFont.load({
+        google: {
+          families: ['Roboto:400,700', 'Noto+Sans+JP:400,700']
+        }
+      });
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })();
+    </script>
   </head>
   <body>
     <h1>Serviver Agent</h1>
