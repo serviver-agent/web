@@ -45,11 +45,11 @@ for (i=0; i<sum; i++){dy[i]=0;dx[i]=0;zy[i]=0;zx[i]=0;}
 var cssk='position:absolute; top:0; left:0; font-family:Arial,sans-serif;text-align:center;';//■時計の共通のCSS指定
 var css1=cssk+'width:16px; height:16px; font-size:16px; font-weight:bold;';//■色以外の時計の針のCSS指定
 var css2=cssk+'width:10px; height:10px; font-size:10px;';//■色以外の時計の数字のCSS指定
-for (i=0; i<tdlen; i++){document.write('<div id="_date'+i+'" style="color:'+dCol+';'+css2+'">'+todaysDate[i]+'<\/div>');}
-for (i=0; i<cflen; i++){document.write('<div id="_face'+i+'" style="color:'+fCol+';'+css2+'">'+cfa[i]+'<\/div>');}
-for (i=0; i<hlen; i++){document.write('<div id="_hours'+i+'" style="color:'+hCol+';'+css1+'">'+hourfin[i]+'<\/div>');}
-for (i=0; i<mlen; i++){document.write('<div id="_minutes'+i+'" style="color:'+mCol+';'+css1+'">'+minfin[i]+'<\/div>');}
-for (i=0; i<slen; i++){document.write('<div id="_seconds'+i+'" style="color:'+sCol+';'+css1+'">'+secfin[i]+'<\/div>');}
+for (i=0; i<tdlen; i++){var e=document.createElement("div");e.innerHTML=todaysDate[i];e.id='_date'+i;e.style='color:'+dCol+';'+css1;document.body.appendChild(e);}
+for (i=0; i<cflen; i++){var e=document.createElement("div");e.innerHTML=cfa[i];e.id='_face'+i;e.style='color:'+fCol+';'+css1;document.body.appendChild(e);}
+for (i=0; i<hlen; i++){var e=document.createElement("div");e.innerHTML=hourfin[i];e.id='_hours'+i;e.style='color:'+hCol+';'+css1;document.body.appendChild(e);}
+for (i=0; i<mlen; i++){var e=document.createElement("div");e.innerHTML=minfin[i];e.id='_minutes'+i;e.style='color:'+mCol+';'+css1;document.body.appendChild(e);}
+for (i=0; i<slen; i++){var e=document.createElement("div");e.innerHTML=secfin[i];e.id='_seconds'+i;e.style='color:'+sCol+';'+css1;document.body.appendChild(e);}
 function winsize(){ h=window.innerHeight-18; w=window.innerWidth-18;}
 function scrl(yx){var y,x; y=window.pageYOffset; x=window.pageXOffset;return (yx===0)?y:x;}
 function mouse(e){var msy=window.pageYOffset; my=e.pageY+ofst-msy; mx= e.pageX+ofst;}
