@@ -25,7 +25,12 @@ window.onload = function() {
   size.y = dvd.clientWidth;
 
   dvd.onclick = function(e) {
-      updateColor();
+    e.preventDefault;
+    updateColor();
+  };
+  dvd.ontouchstart = function(e) {
+    e.preventDefault;
+    updateColor();
   };
 
   dvd.style.top = 20;
