@@ -14,12 +14,11 @@ class DVD {
     this.dom.ontouchstart = () => this.changeColor()
 
     this.changeColor()
-
   }
 
   update(t) {
 
-    const dt = t - this.previousTime
+    const dt = t - (this.previousTime || t)
 
     const areaWidth = dvdFieldDOM.clientWidth - this.dom.clientWidth
     const areaHeight = dvdFieldDOM.clientHeight - this.dom.clientHeight
@@ -49,14 +48,37 @@ class DVD {
 
 function runDVD() {
 
-  const dvd = new DVD(document.getElementById("dvd"));
+  const dvds = [new DVD(document.getElementById("dvd"))];
+
+  onDVD(() => {
+    const dvdDOM = document.getElementById("dvd").cloneNode(true)
+    document.body.appendChild(dvdDOM)
+    dvds.push(new DVD(dvdDOM))
+  })
+
 
   function loop(dt) {
-    dvd.update(dt)
+    dvds.forEach(dvd => dvd.update(dt))
     requestAnimationFrame(loop)
   }
+
   requestAnimationFrame(loop)
 
 }
 
 runDVD()
+
+
+function onDVD(callback) {
+  let keyQueue = ['', '', '']
+  const listener = e => {
+    keyQueue.shift()
+    keyQueue.push(e.key)
+    if (keyQueue.join('') === 'dvd') {
+      callback()
+    }
+  }
+  document.addEventListener('keypress', listener)
+
+  return () => document.removeEventListener('keypress', listener)
+}
