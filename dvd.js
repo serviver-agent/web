@@ -2,16 +2,22 @@ const dvdFieldDOM = document.getElementById("dvd-field");
 
 class DVD {
 
-  constructor(dvdSvgDOM) {
+  constructor(dvdSvgDOM, x, y) {
 
     this.dom = dvdSvgDOM
-    this.coord = { x: 0, y: 0 }
+    this.coord = { x: x, y: y }
     this.speed = 0.26
     this.rgbVec3 = [0, 0, 0]
     this.previousTime = 0
 
-    this.dom.onclick = () => this.changeColor()
-    this.dom.ontouchstart = () => this.changeColor()
+    this.dom.onclick = () => {
+      this.changeColor();
+      runDVD(x + 100, y);
+    }
+    this.dom.ontouchstart = () => {
+      this.changeColor()
+      runDVD(x + 100, y);
+    }
 
     this.changeColor()
 
@@ -47,9 +53,15 @@ class DVD {
 
 }
 
-function runDVD() {
+function runDVD(x, y) {
 
-  const dvd = new DVD(document.getElementById("dvd"));
+  const template = document.querySelector("#dvd-template");
+  const body = document.querySelector("body");
+  const clone = document.importNode(template.content, true);
+  const svg = clone.querySelector(".dvd");
+  console.log(svg);
+  body.appendChild(svg);
+  const dvd = new DVD(svg, x, y);
 
   function loop(dt) {
     dvd.update(dt)
@@ -59,4 +71,4 @@ function runDVD() {
 
 }
 
-runDVD()
+runDVD(0, 0)
