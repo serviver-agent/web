@@ -12,11 +12,11 @@ class DVD {
 
     this.dom.onclick = () => {
       this.changeColor();
-      runDVD(x + 100, y);
+      runDVD(dvdFieldDOM.clientWidth - this.dom.clientWidth - x, y);
     }
     this.dom.ontouchstart = () => {
       this.changeColor()
-      runDVD(x + 100, y);
+      runDVD(dvdFieldDOM.clientWidth - this.dom.clientWidth - x, y);
     }
 
     this.changeColor()
