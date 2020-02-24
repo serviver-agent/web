@@ -1,75 +1,62 @@
-window.onload = function() {
-  let ctx = {
-    x: 100,
-    y: 100,
-    vx: 3,
-    vy: 3,
-    fieldx: null,
-    fieldy: null,
-  }
-  let size = {
-    x: null,
-    y: null
-  }
+const dvdFieldDOM = document.getElementById("dvd-field");
 
-  var dvdField = document.getElementById("dvd-field");
-  ctx.fieldx = dvdField.clientHeight;
-  ctx.fieldy = dvdField.clientWidth;
-  window.onresize = function() {
-    ctx.fieldx = dvdField.clientHeight;
-    ctx.fieldy = dvdField.clientWidth;
+class DVD {
+
+  constructor(dvdSvgDOM) {
+
+    this.dom = dvdSvgDOM
+    this.coord = { x: 0, y: 0 }
+    this.speed = 0.26
+    this.rgbVec3 = [0, 0, 0]
+    this.previousTime = 0
+
+    this.dom.onclick = () => this.changeColor()
+    this.dom.ontouchstart = () => this.changeColor()
+
+    this.changeColor()
+
   }
 
-  var dvd = document.getElementById("dvd");
-  size.x = dvd.clientHeight;
-  size.y = dvd.clientWidth;
+  update(t) {
 
-  dvd.onclick = function(e) {
-    e.preventDefault;
-    updateColor();
-  };
-  dvd.ontouchstart = function(e) {
-    e.preventDefault;
-    updateColor();
-  };
+    const dt = t - this.previousTime
 
-  dvd.style.top = 20;
-  dvd.style.left = 400;
-  updateColor();
-  update();
+    const areaWidth = dvdFieldDOM.clientWidth - this.dom.clientWidth
+    const areaHeight = dvdFieldDOM.clientHeight - this.dom.clientHeight
 
-  console.log(ctx);
-  console.log(size);
+    const x = (this.coord.x + this.speed * dt) % (areaWidth * 2)
+    const y = (this.coord.y + this.speed * dt) % (areaHeight * 2)
 
-  function update() {
-    setTimeout(() => {
-      ctx.x += ctx.vx;
-      ctx.y += ctx.vy;
-      dvd.style.top = ctx.x + "px";
-      dvd.style.left = ctx.y + "px";
-      checkHit();
-      update();
-    }, 10);
+    if ((Math.floor(this.coord.x / areaWidth) != Math.floor(x / areaWidth))
+      || (Math.floor(this.coord.y / areaHeight) != Math.floor(y / areaHeight)))
+      this.changeColor()
+
+    this.coord = {x, y}
+
+    this.dom.style.left = areaWidth - Math.abs(this.coord.x - areaWidth) + "px";
+    this.dom.style.top = areaHeight - Math.abs(this.coord.y - areaHeight) + "px";
+
+    this.previousTime = t
+
   }
 
-  function checkHit() {
-    if(ctx.x + size.x >= ctx.fieldx || ctx.x <= 0){
-      ctx.vx *= -1;
-      updateColor();
-    }
-  
-    if(ctx.y + size.y >= ctx.fieldy || ctx.y <= 0){
-      ctx.vy *= -1;
-      updateColor();
-    }
-  }
-  
-  function updateColor() {
-    r = Math.random() * (254 - 0) + 0;
-    g = Math.random() * (254 - 0) + 0;
-    b = Math.random() * (254 - 0) + 0;
-
-    dvd.style.fill = 'rgb('+r+','+g+', '+b+')';
+  changeColor() {
+    this.rgbVec3 = Array(3).fill(null).map(_ => parseInt(Math.floor(Math.random() * 256), 10))
+    this.dom.style.fill = `rgb(${this.rgbVec3.map(int => int.toString()).join(',')})`;
   }
 
 }
+
+function runDVD() {
+
+  const dvd = new DVD(document.getElementById("dvd"));
+
+  function loop(dt) {
+    dvd.update(dt)
+    requestAnimationFrame(loop)
+  }
+  requestAnimationFrame(loop)
+
+}
+
+runDVD()
