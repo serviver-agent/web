@@ -30,7 +30,7 @@ class DVD {
       || (Math.floor(this.coord.y / areaHeight) != Math.floor(y / areaHeight)))
       this.changeColor()
 
-    this.coord = {x, y}
+    this.coord = { x, y }
 
     this.dom.style.left = areaWidth - Math.abs(this.coord.x - areaWidth) + "px";
     this.dom.style.top = areaHeight - Math.abs(this.coord.y - areaHeight) + "px";
@@ -63,6 +63,24 @@ function runDVD() {
   }
 
   requestAnimationFrame(loop)
+
+}
+
+function onDVD(callback) {
+
+  let queue = Array(3).fill('')
+  const handler = event => {
+    queue.shift()
+    queue.push(event.key)
+    if (queue.join('') === 'dvd') {
+      queue = Array(3).fill('')
+      callback()
+    }
+  }
+
+  document.addEventListener('keypress', handler)
+
+  return () => document.removeEventListener('keypress', handler)
 
 }
 
